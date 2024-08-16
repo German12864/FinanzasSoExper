@@ -11,33 +11,38 @@
       background: linear-gradient(to right, #00c6ff, #0072ff);
       font-family: 'Arial', sans-serif;
       color: #333;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
     .container {
-      max-width: 90%;
-      width: 600px;
+      max-width: 100%;
+      width: 100%;
       background-color: #ffffff;
       border-radius: 15px;
       box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
       padding: 20px;
-      margin-top: 30px;
-      margin-bottom: 30px;
+      margin-top: 20px;
+      margin-bottom: 20px;
       overflow: hidden;
+      box-sizing: border-box;
     }
     h1 {
-      color: #ffffff;
-      font-size: 28px;
+      color: #007bff;
+      font-size: 1.3rem;
       text-align: center;
       margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     }
     .subtitulo {
-      color: #f8f9fa;
-      margin-bottom: 20px;
-      text-align: center;
+      color: #6c757d;
+    margin-bottom: 20px;
+    text-align: center;
     }
     .logo {
       display: block;
       margin: 0 auto 20px;
-      width: 120px;
+      max-width: 100px;
     }
     .progress {
       margin-bottom: 20px;
@@ -62,16 +67,16 @@
       padding: 10px;
       margin-bottom: 10px;
       border-radius: 5px;
-      font-size: 18px;
+      font-size: 1rem;
     }
     #perfilResultado {
-      font-size: 32px;
+      font-size: 1.5rem;
       font-weight: bold;
       margin-top: 20px;
       color: #007bff;
     }
     .perfil-animacion {
-      font-size: 24px;
+      font-size: 1.2rem;
       margin-top: 20px;
       color: #28a745;
     }
@@ -116,18 +121,41 @@
     .btn-success:hover {
       background-color: #218838;
     }
-    @media (max-width: 768px) {
-      .container {
-        width: 95%;
+
+    /* Estilos responsivos */
+    @media (max-width: 576px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+      .subtitulo {
+        font-size: 1rem;
       }
       .logo {
         width: 80px;
       }
       #perfilResultado {
-        font-size: 24px;
+        font-size: 1.2rem;
       }
       #resultadosList li {
-        font-size: 16px;
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.2rem;
+      }
+      .subtitulo {
+        font-size: 1.1rem;
+      }
+      .logo {
+        width: 90px;
+      }
+      #perfilResultado {
+        font-size: 1.4rem;
+      }
+      #resultadosList li {
+        font-size: 1rem;
       }
     }
   </style>
@@ -135,11 +163,11 @@
 <body>
   <div class="container mt-4">
     <header class="text-center mb-4">
-      <h1>Simulador de Finanzas </h1>
+      <h1>Evaluador de Perfil Financiero </h1>
       <p class="subtitulo">Optimiza tus finanzas respondiendo a estas preguntas 💸</p>
     </header>
     <main>
-      <img src="logo.png" alt="Logo" class="logo">
+      <img src="https://i.imgur.com/Yly1k48.jpeg" alt="Logo" class="logo">
       <div class="progress">
         <div class="progress-bar" role="progressbar" style="width: 0%;" id="barraProgreso"></div>
       </div>
@@ -155,19 +183,7 @@
             </select>
           </div>
         </div>
-        <!-- Agrega más preguntas aquí siguiendo el mismo formato -->
-        <!-- Pregunta 10 -->
-        <div class="pregunta" id="pregunta10">
-          <div class="form-group">
-            <label for="reInvertirGanancias">10. ¿Estás dispuesto a reinvertir ganancias en tu negocio?</label>
-            <select id="reInvertirGanancias" name="reInvertirGanancias" class="form-control" required>
-              <option value="">Seleccionar</option>
-              <option value="si">Sí</option>
-              <option value="no">No</option>
-            </select>
-          </div>
-        </div>
-         <!-- Pregunta 2 -->
+      <!-- Pregunta 2 -->
         <div class="pregunta" id="pregunta2" style="display: none;">
           <div class="form-group">
             <label for="ingresosEstables">2. ¿Tienes ingresos estables?</label>
@@ -274,8 +290,10 @@
         </div>
 
         <!-- Botones de navegación -->
-        <button type="button" class="btn btn-primary" id="siguientePregunta">Siguiente <i class="fas fa-arrow-right"></i></button>
-        <button type="button" class="btn btn-success" id="finalizarSimulador">Finalizar <i class="fas fa-check"></i></button>
+        <div class="text-center mt-4">
+          <button type="button" class="btn btn-primary" id="siguientePregunta">Siguiente <i class="fas fa-arrow-right"></i></button>
+          <button type="button" class="btn btn-success" id="finalizarSimulador">Finalizar <i class="fas fa-check"></i></button>
+        </div>
       </form>
 
       <!-- Contenedor para resultados -->
@@ -347,16 +365,15 @@
       coincidencias["Conservador"] += respuestas.pregunta4 === "si" ? 1 : 0;
 
       coincidencias["Moderado"] += respuestas.pregunta5 === "si" ? 1 : 0;
-      coincidencias["Moderado"] += respuestas.pregunta2 === "si" ? 1 : 0;
-      coincidencias["Moderado"] += respuestas.pregunta3 === "si" ? 1 : 0;
-      coincidencias["Moderado"] += respuestas.pregunta6 === "no" ? 1 : 0;
+      coincidencias["Moderado"] += respuestas.pregunta6 === "si" ? 1 : 0;
+      coincidencias["Moderado"] += respuestas.pregunta7 === "si" ? 1 : 0;
+      coincidencias["Moderado"] += respuestas.pregunta8 === "no" ? 1 : 0;
 
-      coincidencias["Agresivo"] += respuestas.pregunta7 === "si" ? 1 : 0;
-      coincidencias["Agresivo"] += respuestas.pregunta8 === "si" ? 1 : 0;
       coincidencias["Agresivo"] += respuestas.pregunta9 === "si" ? 1 : 0;
+      coincidencias["Agresivo"] += respuestas.pregunta10 === "si" ? 1 : 0;
       coincidencias["Agresivo"] += respuestas.pregunta6 === "si" ? 1 : 0;
 
-      coincidencias["Deudor"] += respuestas.pregunta10 === "si" ? 1 : 0;
+      coincidencias["Deudor"] += respuestas.pregunta7 === "si" ? 1 : 0;
       coincidencias["Deudor"] += respuestas.pregunta2 === "no" ? 1 : 0;
       coincidencias["Deudor"] += respuestas.pregunta3 === "si" ? 1 : 0;
       coincidencias["Deudor"] += respuestas.pregunta4 === "no" ? 1 : 0;
