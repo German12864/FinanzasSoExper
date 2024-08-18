@@ -17,7 +17,6 @@
     }
     .container {
       max-width: 100%;
-      width: 100%;
       background-color: #ffffff;
       border-radius: 15px;
       box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
@@ -29,15 +28,15 @@
     }
     h1 {
       color: #007bff;
-      font-size: 1.3rem;
+      font-size: 2rem;
       text-align: center;
       margin-bottom: 10px;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     }
     .subtitulo {
       color: #6c757d;
-    margin-bottom: 20px;
-    text-align: center;
+      margin-bottom: 20px;
+      text-align: center;
     }
     .logo {
       display: block;
@@ -174,7 +173,7 @@
 <body>
   <div class="container mt-4">
     <header class="text-center mb-4">
-      <h1>Evaluador de Perfil Financiero </h1>
+      <h1>Evaluador de Perfil Financiero</h1>
       <p class="subtitulo">Optimiza tus finanzas respondiendo a estas preguntas 💸</p>
     </header>
     <main>
@@ -194,7 +193,7 @@
             </select>
           </div>
         </div>
-      <!-- Pregunta 2 -->
+        <!-- Pregunta 2 -->
         <div class="pregunta" id="pregunta2" style="display: none;">
           <div class="form-group">
             <label for="ingresosEstables">2. ¿Tienes ingresos estables?</label>
@@ -205,7 +204,6 @@
             </select>
           </div>
         </div>
-        
         <!-- Pregunta 3 -->
         <div class="pregunta" id="pregunta3" style="display: none;">
           <div class="form-group">
@@ -217,7 +215,6 @@
             </select>
           </div>
         </div>
-        
         <!-- Pregunta 4 -->
         <div class="pregunta" id="pregunta4" style="display: none;">
           <div class="form-group">
@@ -229,7 +226,6 @@
             </select>
           </div>
         </div>
-        
         <!-- Pregunta 5 -->
         <div class="pregunta" id="pregunta5" style="display: none;">
           <div class="form-group">
@@ -241,7 +237,6 @@
             </select>
           </div>
         </div>
-
         <!-- Pregunta 6 -->
         <div class="pregunta" id="pregunta6" style="display: none;">
           <div class="form-group">
@@ -253,191 +248,112 @@
             </select>
           </div>
         </div>
-
         <!-- Pregunta 7 -->
         <div class="pregunta" id="pregunta7" style="display: none;">
           <div class="form-group">
-            <label for="metasFinancieras">7. ¿Tienes metas financieras claras?</label>
-            <select id="metasFinancieras" name="metasFinancieras" class="form-control" required>
+            <label for="objetivosFinancieros">7. ¿Tienes claros tus objetivos financieros a largo plazo?</label>
+            <select id="objetivosFinancieros" name="objetivosFinancieros" class="form-control" required>
               <option value="">Seleccionar</option>
               <option value="si">Sí</option>
               <option value="no">No</option>
             </select>
           </div>
         </div>
-
-        <!-- Pregunta 8 -->
-        <div class="pregunta" id="pregunta8" style="display: none;">
-          <div class="form-group">
-            <label for="negocio">8. ¿Considerarías iniciar tu propio negocio?</label>
-            <select id="negocio" name="negocio" class="form-control" required>
-              <option value="">Seleccionar</option>
-              <option value="si">Sí</option>
-              <option value="no">No</option>
-            </select>
-          </div>
+        <!-- Botones -->
+        <div class="d-flex justify-content-between mt-4">
+          <button type="button" id="anteriorPregunta" class="btn btn-primary" disabled>Anterior</button>
+          <button type="button" id="siguientePregunta" class="btn btn-primary">Siguiente</button>
+          <button type="button" id="finalizarSimulador" class="btn btn-success">Finalizar</button>
         </div>
-
-        <!-- Pregunta 9 -->
-        <div class="pregunta" id="pregunta9" style="display: none;">
-          <div class="form-group">
-            <label for="grandesRendimientos">9. ¿Buscas grandes rendimientos en tus inversiones?</label>
-            <select id="grandesRendimientos" name="grandesRendimientos" class="form-control" required>
-              <option value="">Seleccionar</option>
-              <option value="si">Sí</option>
-              <option value="no">No</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Pregunta 10 -->
-        <div class="pregunta" id="pregunta10" style="display: none;">
-          <div class="form-group">
-            <label for="actitud">10. ¿Tienes una actitud emprendedora?</label>
-            <select id="actitud" name="actitud" class="form-control" required>
-              <option value="">Seleccionar</option>
-              <option value="si">Sí</option>
-              <option value="no">No</option>
-            </select>
-          </div>
-        </div>
-
-        <button type="button" class="btn btn-primary" id="botonSiguiente" onclick="mostrarSiguientePregunta()">Siguiente</button>
-        <button type="button" class="btn btn-success" id="finalizarSimulador" onclick="calcularPerfil()">Finalizar</button>
       </form>
-
       <div id="resultadosContainer">
-        <div id="perfilResultado"></div>
-        <div id="descripcionPerfil" style="display: none; margin-top: 20px;">
-          <h2>Descripción del perfil:</h2>
-          <p id="descripcionTexto"></p>
-          <h3>Consejo:</h3>
-          <p id="consejoTexto"></p>
-        </div>
+        <h2 id="perfilResultado"></h2>
+        <div class="perfil-animacion"></div>
+        <p class="perfil-descripcion"></p>
+        <p class="perfil-consejo"></p>
+        <ul id="resultadosList"></ul>
       </div>
     </main>
   </div>
-
   <div id="dinero"></div>
-
   <script>
-    const respuestas = {};
-
-    function mostrarSiguientePregunta() {
+    document.addEventListener('DOMContentLoaded', function () {
       const preguntas = document.querySelectorAll('.pregunta');
-      let preguntaActual = 0;
-      for (let i = 0; i < preguntas.length; i++) {
-        if (preguntas[i].style.display === 'block') {
-          preguntaActual = i;
-          break;
-        }
-      }
-
-      const respuestaSeleccionada = preguntas[preguntaActual].querySelector('select').value;
-      if (respuestaSeleccionada === '') {
-        alert('Por favor, selecciona una opción antes de continuar.');
-        return;
-      }
-
-      respuestas[`pregunta${preguntaActual + 1}`] = respuestaSeleccionada;
-
-      preguntas[preguntaActual].style.display = 'none';
-
-      if (preguntaActual + 1 < preguntas.length) {
-        preguntas[preguntaActual + 1].style.display = 'block';
-        actualizarProgreso((preguntaActual + 1) / preguntas.length * 100);
-      } else {
-        document.getElementById('finalizarSimulador').style.display = 'block';
-        document.getElementById('botonSiguiente').style.display = 'none';
-        actualizarProgreso(100);
-      }
-    }
-
-    function calcularPerfil() {
-      let perfil;
-      const coincidencias = {
-        "Conservador": 0,
-        "Moderado": 0,
-        "Agresivo": 0,
-        "Deudor": 0,
-        "Emprendedor": 0
-      };
-
-      coincidencias["Conservador"] += respuestas.pregunta1 === "si" ? 1 : 0;
-      coincidencias["Conservador"] += respuestas.pregunta2 === "si" ? 1 : 0;
-      coincidencias["Conservador"] += respuestas.pregunta3 === "no" ? 1 : 0;
-      coincidencias["Conservador"] += respuestas.pregunta4 === "si" ? 1 : 0;
-
-      coincidencias["Moderado"] += respuestas.pregunta5 === "si" ? 1 : 0;
-      coincidencias["Moderado"] += respuestas.pregunta6 === "si" ? 1 : 0;
-      coincidencias["Moderado"] += respuestas.pregunta7 === "si" ? 1 : 0;
-      coincidencias["Moderado"] += respuestas.pregunta8 === "no" ? 1 : 0;
-
-      coincidencias["Agresivo"] += respuestas.pregunta9 === "si" ? 1 : 0;
-      coincidencias["Agresivo"] += respuestas.pregunta10 === "si" ? 1 : 0;
-      coincidencias["Agresivo"] += respuestas.pregunta6 === "si" ? 1 : 0;
-
-      coincidencias["Deudor"] += respuestas.pregunta7 === "si" ? 1 : 0;
-      coincidencias["Deudor"] += respuestas.pregunta2 === "no" ? 1 : 0;
-      coincidencias["Deudor"] += respuestas.pregunta3 === "si" ? 1 : 0;
-      coincidencias["Deudor"] += respuestas.pregunta4 === "no" ? 1 : 0;
-
-      coincidencias["Emprendedor"] += respuestas.pregunta7 === "si" ? 1 : 0;
-      coincidencias["Emprendedor"] += respuestas.pregunta8 === "si" ? 1 : 0;
-      coincidencias["Emprendedor"] += respuestas.pregunta9 === "si" ? 1 : 0;
-      coincidencias["Emprendedor"] += respuestas.pregunta10 === "si" ? 1 : 0;
-
-      perfil = Object.keys(coincidencias).reduce((a, b) => coincidencias[a] > coincidencias[b] ? a : b);
-
-      // Mostrar resultados
-      document.getElementById('perfilResultado').textContent = `Tu perfil financiero es: ${perfil}`;
-      mostrarAnimacionDinero();
-
-      // Mostrar descripción y consejo
-      mostrarDescripcionYConsejo(perfil);
-    }
-
-    function mostrarDescripcionYConsejo(perfil) {
-      const descripcionPerfil = document.getElementById('descripcionTexto');
-      const consejoTexto = document.getElementById('consejoTexto');
-
-      const descripciones = {
-        "Conservador": "Eres una persona que prefiere la seguridad y minimiza el riesgo en sus inversiones.",
-        "Moderado": "Buscas un equilibrio entre seguridad y crecimiento, dispuesto a asumir algunos riesgos controlados.",
-        "Agresivo": "Estás dispuesto a asumir altos riesgos en busca de grandes recompensas.",
-        "Deudor": "Estás enfocado en pagar deudas y es posible que necesites ayuda para mejorar tu situación financiera.",
-        "Emprendedor": "Tienes una mentalidad empresarial, dispuesto a invertir y arriesgar para hacer crecer tu negocio."
-      };
-
-      const consejos = {
-        "Conservador": "Considera diversificar un poco tus inversiones para mejorar tus rendimientos a largo plazo.",
-        "Moderado": "Mantén tu enfoque equilibrado, pero no dudes en ajustar tu estrategia según las circunstancias.",
-        "Agresivo": "Recuerda que un alto riesgo también puede implicar grandes pérdidas, diversifica y protege tu capital.",
-        "Deudor": "Enfócate en reducir tus deudas lo antes posible y luego comienza a ahorrar e invertir.",
-        "Emprendedor": "Sigue explorando oportunidades de crecimiento, pero no olvides tener un plan de contingencia."
-      };
-
-      descripcionPerfil.textContent = descripciones[perfil];
-      consejoTexto.textContent = consejos[perfil];
-
-      document.getElementById('descripcionPerfil').style.display = 'block';
-    }
-
-    function mostrarAnimacionDinero() {
-      const contenedor = document.getElementById('dinero');
-      for (let i = 0; i < 30; i++) {
-        const dinero = document.createElement('div');
-        dinero.className = 'dinero';
-        dinero.style.left = Math.random() * window.innerWidth + 'px';
-        dinero.style.animationDelay = Math.random() * 5 + 's';
-        contenedor.appendChild(dinero);
-      }
-    }
-
-    function actualizarProgreso(porcentaje) {
       const barraProgreso = document.getElementById('barraProgreso');
-      barraProgreso.style.width = `${porcentaje}%`;
-    }
+      let preguntaActual = 0;
+      const totalPreguntas = preguntas.length;
+
+      const mostrarPregunta = (index) => {
+        preguntas.forEach((pregunta, i) => {
+          pregunta.style.display = i === index ? 'block' : 'none';
+        });
+        barraProgreso.style.width = ((index + 1) / totalPreguntas) * 100 + '%';
+      };
+
+      const actualizarBotones = () => {
+        document.getElementById('anteriorPregunta').disabled = preguntaActual === 0;
+        document.getElementById('siguientePregunta').style.display = preguntaActual === totalPreguntas - 1 ? 'none' : 'inline-block';
+        document.getElementById('finalizarSimulador').style.display = preguntaActual === totalPreguntas - 1 ? 'inline-block' : 'none';
+      };
+
+      document.getElementById('siguientePregunta').addEventListener('click', () => {
+        if (preguntaActual < totalPreguntas - 1) {
+          preguntaActual++;
+          mostrarPregunta(preguntaActual);
+          actualizarBotones();
+        }
+      });
+
+      document.getElementById('anteriorPregunta').addEventListener('click', () => {
+        if (preguntaActual > 0) {
+          preguntaActual--;
+          mostrarPregunta(preguntaActual);
+          actualizarBotones();
+        }
+      });
+
+      document.getElementById('finalizarSimulador').addEventListener('click', () => {
+        // Mostrar los resultados finales aquí
+        document.getElementById('simuladorFinanzasForm').style.display = 'none';
+        document.getElementById('resultadosContainer').style.display = 'block';
+
+        // Simulación de resultados (esto lo puedes ajustar)
+        const perfil = 'Conservador'; // Este valor lo puedes obtener según las respuestas
+        document.getElementById('perfilResultado').innerText = `Tu perfil financiero es: ${perfil}`;
+        document.querySelector('.perfil-animacion').innerHTML = `🎉 ¡Felicidades! Has completado el simulador. 🎉`;
+
+        const resultadosList = document.getElementById('resultadosList');
+        resultadosList.innerHTML = `
+          <li>Evitas el riesgo: Sí</li>
+          <li>Tienes ingresos estables: Sí</li>
+          <li>No tienes deudas: Sí</li>
+          <li>Prefieres ahorros seguros: Sí</li>
+        `;
+
+        // Descripción y consejo basado en el perfil
+        const descripcion = 'Eres una persona que prefiere mantener su dinero seguro y evitar riesgos innecesarios.';
+        const consejo = 'Considera diversificar tus ahorros con inversiones de bajo riesgo para mantener tu estabilidad financiera.';
+        document.querySelector('.perfil-descripcion').innerText = descripcion;
+        document.querySelector('.perfil-consejo').innerText = consejo;
+
+        // Activar animación de dinero
+        lanzarDinero();
+      });
+
+      const lanzarDinero = () => {
+        const contenedorDinero = document.getElementById('dinero');
+        for (let i = 0; i < 30; i++) {
+          const billete = document.createElement('div');
+          billete.classList.add('dinero');
+          billete.style.left = Math.random() * window.innerWidth + 'px';
+          billete.style.animationDelay = Math.random() * 2 + 's';
+          contenedorDinero.appendChild(billete);
+        }
+      };
+
+      mostrarPregunta(preguntaActual);
+      actualizarBotones();
+    });
   </script>
 </body>
 </html>
