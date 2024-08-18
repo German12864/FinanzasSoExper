@@ -80,6 +80,17 @@
       margin-top: 20px;
       color: #28a745;
     }
+    .perfil-descripcion {
+      margin-top: 20px;
+      font-size: 1rem;
+      color: #343a40;
+    }
+    .perfil-consejo {
+      margin-top: 10px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #28a745;
+    }
     #dinero {
       position: absolute;
       top: 0;
@@ -246,8 +257,8 @@
         <!-- Pregunta 7 -->
         <div class="pregunta" id="pregunta7" style="display: none;">
           <div class="form-group">
-            <label for="negocioPropio">7. ¿Tienes un negocio propio o estás pensando en iniciar uno?</label>
-            <select id="negocioPropio" name="negocioPropio" class="form-control" required>
+            <label for="metasFinancieras">7. ¿Tienes metas financieras claras?</label>
+            <select id="metasFinancieras" name="metasFinancieras" class="form-control" required>
               <option value="">Seleccionar</option>
               <option value="si">Sí</option>
               <option value="no">No</option>
@@ -258,8 +269,8 @@
         <!-- Pregunta 8 -->
         <div class="pregunta" id="pregunta8" style="display: none;">
           <div class="form-group">
-            <label for="tomarRiesgos">8. ¿Estás dispuesto a tomar riesgos calculados para hacer crecer tu negocio?</label>
-            <select id="tomarRiesgos" name="tomarRiesgos" class="form-control" required>
+            <label for="negocio">8. ¿Considerarías iniciar tu propio negocio?</label>
+            <select id="negocio" name="negocio" class="form-control" required>
               <option value="">Seleccionar</option>
               <option value="si">Sí</option>
               <option value="no">No</option>
@@ -270,18 +281,8 @@
         <!-- Pregunta 9 -->
         <div class="pregunta" id="pregunta9" style="display: none;">
           <div class="form-group">
-            <label for="financiamiento">9. ¿Buscas financiamiento para tu emprendimiento?</label>
-            <select id="financiamiento" name="financiamiento" class="form-control" required>
-              <option value="">Seleccionar</option>
-              <option value="si">Sí</option>
-              <option value="no">No</option>
-            </select>
-          </div>
-        </div>
-        <div class="pregunta" id="pregunta10">
-          <div class="form-group">
-            <label for="reInvertirGanancias">10. ¿Estás dispuesto a reinvertir ganancias en tu negocio?</label>
-            <select id="reInvertirGanancias" name="reInvertirGanancias" class="form-control" required>
+            <label for="grandesRendimientos">9. ¿Buscas grandes rendimientos en tus inversiones?</label>
+            <select id="grandesRendimientos" name="grandesRendimientos" class="form-control" required>
               <option value="">Seleccionar</option>
               <option value="si">Sí</option>
               <option value="no">No</option>
@@ -289,63 +290,67 @@
           </div>
         </div>
 
-        <!-- Botones de navegación -->
-        <div class="text-center mt-4">
-          <button type="button" class="btn btn-primary" id="siguientePregunta">Siguiente <i class="fas fa-arrow-right"></i></button>
-          <button type="button" class="btn btn-success" id="finalizarSimulador">Finalizar <i class="fas fa-check"></i></button>
+        <!-- Pregunta 10 -->
+        <div class="pregunta" id="pregunta10" style="display: none;">
+          <div class="form-group">
+            <label for="actitud">10. ¿Tienes una actitud emprendedora?</label>
+            <select id="actitud" name="actitud" class="form-control" required>
+              <option value="">Seleccionar</option>
+              <option value="si">Sí</option>
+              <option value="no">No</option>
+            </select>
+          </div>
         </div>
+
+        <button type="button" class="btn btn-primary" id="botonSiguiente" onclick="mostrarSiguientePregunta()">Siguiente</button>
+        <button type="button" class="btn btn-success" id="finalizarSimulador" onclick="calcularPerfil()">Finalizar</button>
       </form>
 
-      <!-- Contenedor para resultados -->
       <div id="resultadosContainer">
-        <div id="dinero"></div>
-        <div id="perfilResultado" class="perfil-animacion"></div>
-        <ul id="resultadosList"></ul>
+        <div id="perfilResultado"></div>
+        <div id="descripcionPerfil" style="display: none; margin-top: 20px;">
+          <h2>Descripción del perfil:</h2>
+          <p id="descripcionTexto"></p>
+          <h3>Consejo:</h3>
+          <p id="consejoTexto"></p>
+        </div>
       </div>
     </main>
   </div>
 
+  <div id="dinero"></div>
+
   <script>
-    document.getElementById('siguientePregunta').addEventListener('click', function() {
-      mostrarSiguientePregunta();
-    });
-
-    document.getElementById('finalizarSimulador').addEventListener('click', function() {
-      calcularPerfil();
-    });
-
-    let preguntaActual = 1;
-    const totalPreguntas = 10;
     const respuestas = {};
 
     function mostrarSiguientePregunta() {
-      const pregunta = document.getElementById('pregunta' + preguntaActual);
-      const respuesta = pregunta.querySelector('select').value;
+      const preguntas = document.querySelectorAll('.pregunta');
+      let preguntaActual = 0;
+      for (let i = 0; i < preguntas.length; i++) {
+        if (preguntas[i].style.display === 'block') {
+          preguntaActual = i;
+          break;
+        }
+      }
 
-      if (!respuesta) {
-        alert('Por favor, responde la pregunta.');
+      const respuestaSeleccionada = preguntas[preguntaActual].querySelector('select').value;
+      if (respuestaSeleccionada === '') {
+        alert('Por favor, selecciona una opción antes de continuar.');
         return;
       }
 
-      respuestas[`pregunta${preguntaActual}`] = respuesta;
+      respuestas[`pregunta${preguntaActual + 1}`] = respuestaSeleccionada;
 
-      pregunta.style.display = 'none';
-      preguntaActual++;
+      preguntas[preguntaActual].style.display = 'none';
 
-      if (preguntaActual <= totalPreguntas) {
-        document.getElementById('pregunta' + preguntaActual).style.display = 'block';
-        actualizarProgreso();
-      }
-
-      if (preguntaActual > totalPreguntas) {
-        document.getElementById('siguientePregunta').style.display = 'none';
+      if (preguntaActual + 1 < preguntas.length) {
+        preguntas[preguntaActual + 1].style.display = 'block';
+        actualizarProgreso((preguntaActual + 1) / preguntas.length * 100);
+      } else {
         document.getElementById('finalizarSimulador').style.display = 'block';
+        document.getElementById('botonSiguiente').style.display = 'none';
+        actualizarProgreso(100);
       }
-    }
-
-    function actualizarProgreso() {
-      const progreso = (preguntaActual - 1) / totalPreguntas * 100;
-      document.getElementById('barraProgreso').style.width = progreso + '%';
     }
 
     function calcularPerfil() {
@@ -358,7 +363,6 @@
         "Emprendedor": 0
       };
 
-      // Contar coincidencias para cada perfil
       coincidencias["Conservador"] += respuestas.pregunta1 === "si" ? 1 : 0;
       coincidencias["Conservador"] += respuestas.pregunta2 === "si" ? 1 : 0;
       coincidencias["Conservador"] += respuestas.pregunta3 === "no" ? 1 : 0;
@@ -388,21 +392,51 @@
       // Mostrar resultados
       document.getElementById('perfilResultado').textContent = `Tu perfil financiero es: ${perfil}`;
       mostrarAnimacionDinero();
+
+      // Mostrar descripción y consejo
+      mostrarDescripcionYConsejo(perfil);
+    }
+
+    function mostrarDescripcionYConsejo(perfil) {
+      const descripcionPerfil = document.getElementById('descripcionTexto');
+      const consejoTexto = document.getElementById('consejoTexto');
+
+      const descripciones = {
+        "Conservador": "Eres una persona que prefiere la seguridad y minimiza el riesgo en sus inversiones.",
+        "Moderado": "Buscas un equilibrio entre seguridad y crecimiento, dispuesto a asumir algunos riesgos controlados.",
+        "Agresivo": "Estás dispuesto a asumir altos riesgos en busca de grandes recompensas.",
+        "Deudor": "Estás enfocado en pagar deudas y es posible que necesites ayuda para mejorar tu situación financiera.",
+        "Emprendedor": "Tienes una mentalidad empresarial, dispuesto a invertir y arriesgar para hacer crecer tu negocio."
+      };
+
+      const consejos = {
+        "Conservador": "Considera diversificar un poco tus inversiones para mejorar tus rendimientos a largo plazo.",
+        "Moderado": "Mantén tu enfoque equilibrado, pero no dudes en ajustar tu estrategia según las circunstancias.",
+        "Agresivo": "Recuerda que un alto riesgo también puede implicar grandes pérdidas, diversifica y protege tu capital.",
+        "Deudor": "Enfócate en reducir tus deudas lo antes posible y luego comienza a ahorrar e invertir.",
+        "Emprendedor": "Sigue explorando oportunidades de crecimiento, pero no olvides tener un plan de contingencia."
+      };
+
+      descripcionPerfil.textContent = descripciones[perfil];
+      consejoTexto.textContent = consejos[perfil];
+
+      document.getElementById('descripcionPerfil').style.display = 'block';
     }
 
     function mostrarAnimacionDinero() {
-      document.getElementById('resultadosContainer').style.display = 'block';
-
-      const dineroContainer = document.getElementById('dinero');
-      dineroContainer.innerHTML = ''; // Limpiar cualquier animación anterior
-
+      const contenedor = document.getElementById('dinero');
       for (let i = 0; i < 30; i++) {
         const dinero = document.createElement('div');
         dinero.className = 'dinero';
-        dinero.style.left = `${Math.random() * 100}vw`;
-        dinero.style.animationDelay = `${Math.random() * 5}s`;
-        dineroContainer.appendChild(dinero);
+        dinero.style.left = Math.random() * window.innerWidth + 'px';
+        dinero.style.animationDelay = Math.random() * 5 + 's';
+        contenedor.appendChild(dinero);
       }
+    }
+
+    function actualizarProgreso(porcentaje) {
+      const barraProgreso = document.getElementById('barraProgreso');
+      barraProgreso.style.width = `${porcentaje}%`;
     }
   </script>
 </body>
